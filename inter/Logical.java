@@ -10,9 +10,9 @@ import lexer.*; import symbols.*;
 * garantir que tanto a quanto b sejam boolianos.
 */
 
-public class Logical extends Exper {
+public class Logical extends Expr {
 	public Expr expr1, expr2;
-	Logical(Token tok, Expr1 x1, Expr2 x2) {
+	Logical(Token tok, Expr x1, Expr x2) {
 		super(tok, null); // tipo nulo para começar
 		expr1 = x1; expr2 = x2;
 		type = check(expr1.type, expr2.type);
@@ -36,6 +36,6 @@ public class Logical extends Exper {
 	}
 
 	public String toString() {
-		return expr1.toString() + " " + op.toString() + " " + exper2.toString();
+		return expr1.toString() + " " + op.toString() + " " + expr2.toString();
 	}
 }
