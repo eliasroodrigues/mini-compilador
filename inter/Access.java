@@ -9,7 +9,7 @@ import lexer.*; import symbols.*;
 * jumping para o código de desvio.
 */
 
-public class Access extends OP {
+public class Access extends Op {
 	public Id array;
 	public Expr index;
 	public Access(Id a, Expr i, Type p) {    // p é o tipo de elemento após
@@ -20,6 +20,6 @@ public class Access extends OP {
 	public Expr gen() { return new Access(array, index.reduce(), type); }
 	public void jumping(int t, int f) { emitjumps(reduce().toString(), t, f); }
 	public String toString() {
-		return array.toString() + " [ " + index.toString + " ] "; 
+		return array.toString() + " [ " + index.toString() + " ] "; 
 	}
 }

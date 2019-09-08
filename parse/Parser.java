@@ -32,7 +32,7 @@ public class Parser {
 		  * Geração do código intermediário
 		  */
 		 int begin = s.newlabel(); int after = s.newlabel();
-		 s.emitlabel(begin); s.gen(begin, after); s.editlabel(after);
+		 s.emitlabel(begin); s.gen(begin, after); s.emitlabel(after);
 	 }
 	 
 	 /*
@@ -75,8 +75,8 @@ public class Parser {
 	  * as produções para o não terminal Stmt. Cada case constrói um nó para um construção,
 	  * usando as funçoes construtoras.
 	  * */
-	 Stmts stmts() throws IOException {
-		 if ( look.tag =='}') return Stmt.Null;
+	 Stmt stmts() throws IOException {
+		 if ( look.tag == '}') return Stmt.Null;
 		 else return new Seq(stmt(), stmts());
 	 }
 	 
@@ -87,7 +87,7 @@ public class Parser {
 		 switch ( look.tag ) {
 		 case ';':
 			 move();
-			 return Stmt.Null
+			 return Stmt.Null;
 		 case Tag.IF:
 			 match(Tag.IF); match('('); x = bool(); match(')');
 			 s1 = stmt();
@@ -96,7 +96,7 @@ public class Parser {
 			 s2 = stmt();
 			 return new Else(x, s1, s2);
 		 case Tag.WHILE:
-			 While whilende = new While();
+			 While whilenode = new While();
 			 savedStmt = Stmt.Enclosing; Stmt.Enclosing = whilenode;
 			 match(Tag.WHILE); match('('); x = bool(); match(')');
 			 s1 = stmt();
@@ -176,7 +176,7 @@ public class Parser {
 		 Expr x = expr();
 		 switch( look.tag ) {
 		 case'<': case Tag.LE: case Tag.GE: case'>':
-			 Token tok = look; move(); return new Real(tok, x, expr());
+			 Token tok = look; move(); return new Rel(tok, x, expr());
 		 default: 
 			 return x;
 		 }
@@ -226,7 +226,7 @@ public class Parser {
 		 case Tag.REAL: 
 			 x = new Constant(look, Type.Float); move(); return x;
 		 case Tag.TRUE: 
-			 x = new Constant(look, Type.True); move(); return x;
+			 x = Constant.True; move(); return x;
 		 case Tag.FALSE:
 			 x = Constant.False;
 		default:
